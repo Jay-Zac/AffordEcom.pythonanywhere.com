@@ -1,0 +1,21 @@
+{%extends 'core_html/base.html'%}
+{%block title%}New Conversation{%endblock%}
+
+{%block content%}
+  <h1 class="mb-6 text-3xl text-center">New conversation</h1>
+  <form method="post" action="." class="text-center">
+    {%csrf_token%}
+    <div class="space-x-4">
+        {{form.as_p}}
+    </div>
+     {% if form.errors or form.non_field_errors%}
+        <div class="mb-3 p-6 bg-red-100 rounded-xl">
+            {%for field in form%}
+             {{field.errors}}
+            {%endfor%}
+            {{form.non_field_errors}}
+        </div>
+    {%endif%}
+    <button class=" btn btn-success mt-6 py-4 px-8 text-lg text-white">Send</button>
+</form>
+{%endblock%}

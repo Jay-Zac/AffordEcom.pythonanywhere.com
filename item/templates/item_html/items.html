@@ -1,0 +1,142 @@
+{%extends 'core_html/base.html'%}
+{%block title%}All Items{%endblock%}
+{%block content%}
+        <!-- Header-->
+        <header class="bg-dark py-5">
+            <div class="container px-4 px-lg-5 my-5">
+                <div class="text-center text-white">
+                    <h1 class="display-4 fw-bolder">All Items</h1>
+                    <p class="lead fw-normal text-white-50 mb-0">Our products are insanely cheap!</p>
+                </div>
+            </div>
+        </header>
+        <div class="mt-4 text-center">
+            <form method="get" action="{%url 'item:items'%}">
+                <input name="query" class="text-black w-full py-4 px-4 bg-white border rounded-xl"
+                       type="text" value="{{query}}" placeholder="find an Item">
+                <button class="mt-2 py-2 px-2 text-lg bg-dark text-white rounded-xl">Search</button>
+            </form>
+        </div>
+
+        <!-- Section-->
+        <section class="py-5">
+            <div class="container px-4 px-lg-5 mt-5">
+                <hr class="my-6 ">
+                <p class="font-semibold">Categories</p>
+                <ul>
+                     {%for category in categories%}
+                       <li class="py-2 px-2 rounded-xl {%if category.id == category_id%} bg-gray-200 {%endif%}">
+                          <a href="{%url 'item:items'%}?query={{query}}&category={{category.id}}">{{category.name}}</a>
+                       </li>
+                    {%endfor%}
+                </ul>
+                        <hr class="my-6 ">
+                <p class="font-semibold">Clear filters</p>
+                <ul>
+                     <li>
+                         <a href="{% url 'item:items'%}" class="mt-2 py-4 px-8 inline-block bg-yellow-500 text-lg rounded-xl text-black">Clear
+                         </a>
+                     </li>
+                </ul>
+                <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+
+                    {%for item in items%}
+                        {%if item.is_product_on_sale%}
+                            <div class="col mb-5">
+                                  <a href="{%url 'item:detail' item.id%}">
+                                        <div class="card h-100">
+                                            <div class="badge bg-dark text-white position-absolute"
+                                            style="top: 0.5rem; right: 0.5rem">SALE</div>
+                                            <!-- Product image-->
+                                            <img class="card-img-top" src="{{item.image.url}}" alt="Item image" />
+                                            <!-- Product details-->
+                                            <div class="card-body p-4">
+                                                <div class="text-center">
+                                                    <!-- Product name-->
+                                                    <h5 class="fw-bolder">{{item.name}}</h5>
+                                                    <!-- Product price-->
+                                                    <strike class="text-gray-500">Price: $&nbsp;{{item.price}}</strike>
+                                                    <p class="text-gray-500">Price: $&nbsp;{{item.sale_price}}</p>
+                                                    <button type="button" class="btn btn-secondary">Add To Cart</button>
+                                                    <div class="d-flex justify-content-center small text-warning mb-2">
+                                                        <div class="bi-star-fill"></div>
+                                                        <div class="bi-star-fill"></div>
+                                                        <div class="bi-star-fill"></div>
+                                                        <div class="bi-star-fill"></div>
+                                                        <div class="bi-star-fill"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- Product actions-->
+                                            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                                                <div class="text-center"><a class="btn btn-outline-dark mt-auto"
+                                                                            href="{%url 'item:detail' item.id%}">
+                                                                            View More &rarr;</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                  </a>
+                            </div>
+                        {%else%}
+                            <div class="col mb-5">
+                                  <a href="{%url 'item:detail' item.id%}">
+                                        <div class="card h-100">
+                                            <!-- Product image-->
+                                            <img class="card-img-top" src="{{item.image.url}}" alt="Item image" />
+                                            <!-- Product details-->
+                                            <div class="card-body p-4">
+                                                <div class="text-center">
+                                                    <!-- Product name-->
+                                                    <h5 class="fw-bolder">{{item.name}}</h5>
+                                                    <!-- Product price-->
+                                                    <p class="text-gray-500">Price: $&nbsp;{{item.price}}</p>
+                                                    <button id="add-cart" type="button" class="btn btn-secondary" value="{{item.id}}">
+                                                        Add To Cart</button>
+                                                    <div class="d-flex justify-content-center small text-warning mb-2">
+                                                        <div class="bi-star-fill"></div>
+                                                        <div class="bi-star-fill"></div>
+                                                        <div class="bi-star-fill"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- Product actions-->
+                                            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                                                <div class="text-center"><a class="btn btn-outline-dark mt-auto"
+                                                                            href="{%url 'item:detail' item.id%}">
+                                                                            View More &rarr;</a></div>
+                                            </div>
+                                        </div>
+                                  </a>
+                            </div>
+                        {%endif%}
+                    {%endfor%}
+                </div>
+            </div>
+        </section>
+
+<script>
+ // check if button pressed
+    $(document).on('click', '#add-cart', function(e){
+        e.preventDefault();
+        $.ajax({
+            type: 'POST',
+            url: '{}',
+            data: {
+                item_id: $('#add-cart').val(),
+                csrfmiddlewaretoken: '{{csrf_token}}'
+                action: 'post'
+            },
+            success: function(json){
+                //console.log(json)
+                document.getElementById('cart_category'),
+                    textContent = json.Qty
+            },
+            error : function(xhr, errmsg, err){}
+            });
+
+
+
+        })
+
+</script>
+{%endblock%}

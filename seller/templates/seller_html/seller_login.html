@@ -1,0 +1,38 @@
+{% extends 'seller_html/seller_base.html' %}
+{% block title %}seller log In{%endblock%}
+{%block content%}
+<header class="bg-dark py-5">
+            <div class="container px-4 px-lg-5 my-5">
+                <div class="text-center text-white">
+                    <h1 class="display-4 fw-bolder">Reach your Customers with Afford</h1>
+                    <p class="lead fw-normal text-white-50 mb-0"> Sign Up in minutes and reach your customers! </p>
+                    <br><br>
+                </div>
+            </div>
+        </header><br><br>
+
+<div class="text-center">
+    <h1 class="text-3xl text-dark mb-3">Seller Log In</h1>
+    <form method="post" action="{%url 'seller:seller_login'%}">
+        {%csrf_token%}
+            <form>
+                  <div class="container mb-3">
+                    <input type="text" class="form-control" name="username" placeholder="Enter your Username">
+                  </div>
+                  <div class="container mb-3">
+                    <input type="password" class="form-control" name="password" placeholder="Enter your password" >
+                  </div>
+                <div class="container mb-3">
+                    <a href="{%url 'reset_password'%}">Forget Password?</a>
+                </div>
+                  <button type="submit" class="btn btn-primary mb-3">Log In</button>
+            </form>
+                <label>No account? Register in minutes!</label>
+                <div>
+                    <a href="{% url 'seller:seller_register'%}">
+                    <button type="submit" class="btn btn-secondary mb-3">Register</button>
+                </a>
+                </div>
+    </form>
+</div>
+    {%endblock%}

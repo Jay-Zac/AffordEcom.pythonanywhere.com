@@ -1,0 +1,127 @@
+{%extends 'core_html/base.html'%}
+{%block title%}Welcome{%endblock%}
+{%block content%}
+        <!-- Header-->
+        <header class="bg-dark py-5">
+            <div class="container px-4 px-lg-5 my-5">
+                <div class="text-center text-white">
+                    <h1 class="display-4 fw-bolder">Shop in Bulk!</h1>
+                    <p class="lead fw-normal text-white-50 mb-0">Our products are insanely cheap!</p>
+                </div>
+            </div>
+        </header>
+        <div class="mt-4 text-center">
+            <form method="get" action="{%url 'item:items'%}">
+                <input name="query" class="text-black w-full py-4 px-4 bg-white border rounded-xl"
+                       type="text" value="{{query}}" placeholder="find an Item">
+                <button class="mt-2 py-2 px-2 text-lg bg-dark text-white rounded-xl">Search</button>
+            </form>
+        </div>
+        <!-- Section-->
+        <section class="py-3">
+            <div class="container px-4 px-lg-5 mt-5">
+                <h2 id="new-arrivals-view" class="text-center text-dark mb-5 text-3xl"><strong>New Arrivals</strong></h2>
+                <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+                    {%for item in items%}
+                        {%if item.is_product_on_sale%}
+                            <div class="col mb-5">
+                                  <a href="{%url 'item:detail' item.id%}">
+                                        <div class="card h-100">
+                                            <div class="badge bg-dark text-white position-absolute"
+                                            style="top: 0.5rem; right: 0.5rem">SALE</div>
+                                            <!-- Product image-->
+                                            {%if item.image%}
+                                            <img class="card-img-top" src="{{item.image.url}}" alt="Item image" />
+                                            {%endif%}
+                                            <!-- Product details-->
+                                            <div class="card-body p-4">
+                                                <div class="text-center">
+                                                    <!-- Product name-->
+                                                    <h5 class="fw-bolder">{{item.name}}</h5>
+                                                    <!-- Product price-->
+                                                    <strike class="text-gray-500">Price: $&nbsp;{{item.price}}</strike>
+                                                    <p class="text-gray-500">Price: $&nbsp;{{item.sale_price}}</p>
+                                                    <div class="d-flex justify-content-center small text-warning mb-2">
+                                                        <div class="bi-star-fill"></div>
+                                                        <div class="bi-star-fill"></div>
+                                                        <div class="bi-star-fill"></div>
+                                                        <div class="bi-star-fill"></div>
+                                                        <div class="bi-star-fill"></div>
+                                                    </div>
+                                                    <p class="text-gray-500"> Description:&nbsp;{{item.description}}</p>
+                                                    <p class="text-gray-500"><strong>Category:&nbsp; {{item.category}}</strong></p>
+
+                                                </div>
+                                            </div>
+                                            <!-- Product actions-->
+                                            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                                                <div class="text-center">
+                                                    <a class="btn btn-outline-dark mt-auto"
+                                                       href="{%url 'item:items'%}">View All Items &rarr;</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                  </a>
+                            </div>
+                        {%else%}
+                            <div class="col mb-5">
+                                  <a href="{%url 'item:detail' item.id%}">
+                                        <div class="card h-100">
+                                            <div class="badge bg-dark text-white position-absolute"
+                                            style="top: 0.5rem; right: 0.5rem"></div>
+                                            <!-- Product image-->
+                                            {%if item.image%}
+                                            <img class="card-img-top" src="{{item.image.url}}" alt="Item image" />
+                                            {%endif%}
+                                            <!-- Product details-->
+                                            <div class="card-body p-4">
+                                                <div class="text-center">
+                                                    <!-- Product name-->
+                                                    <h5 class="fw-bolder">{{item.name}}</h5>
+                                                    <!-- Product price-->
+                                                    <p class="text-gray-500">Price: $&nbsp;{{item.price}}</p>
+                                                    <div class="d-flex justify-content-center small text-warning mb-2">
+                                                        <div class="bi-star-fill"></div>
+                                                        <div class="bi-star-fill"></div>
+                                                        <div class="bi-star-fill"></div>
+                                                    </div>
+                                                    <p class="text-gray-500"> Description: {{item.description}}</p>
+                                                    <p class="text-gray-500"><strong>Category: {{item.category}}</strong></p>
+
+                                                </div>
+                                            </div>
+                                            <!-- Product actions-->
+                                            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                                                <div class="text-center">
+                                                    <a class="btn btn-outline-dark mt-auto"
+                                                       href="{%url 'item:items'%}">View All Items &rarr;</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                  </a>
+                            </div>
+                        {%endif%}
+                    {%endfor%}
+                </div>
+            </div>
+        </section>
+        <section class="py-5 bg-dark">
+            <div class="container px-4 px-lg-5 mt-2 bg-dark">
+                <h2 class="mb-10 text-2xl text-center text-white">Categories</h2><br>
+                <div class="row gx-4 gx-lg-5 row-cols-3 row-cols-md-3 row-cols-xl-4 justify-content-center">
+                    {% for category in categories %}
+                    <div class="card-footer p-4 pt-0 border-top-0 bg-white">
+                        <div class="text-center mt-3">
+                            <a class="btn btn-outline-dark mt-auto"
+                               href="{%url 'item:items'%}?query={{query}}&category={{category.id}}"><strong>
+                                {{category.name}}</strong>
+                            <p>{{ category.items.count }} items</p>
+                            </a>
+
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </section><br><br><br>
+{%endblock%}
