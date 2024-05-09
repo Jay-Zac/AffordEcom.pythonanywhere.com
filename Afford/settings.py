@@ -86,7 +86,7 @@ DATABASES = {
         'NAME': 'afford-db',
         'USER': 'root',
         'PORT': '3306',
-        'PASSWORD': 'jayzac',
+        'PASSWORD': '',
     }
 }
 
